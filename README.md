@@ -1,208 +1,104 @@
-[Espn Sports Scraper](https://apify.com/parseforge/espn-sports-scraper?fpr=data)
+[Espn Sports Scraper](https://apify.com/fortuitous_pirate/espn-sports-scraper?fpr=data)
 
-![ParseForge Banner](https://images.apifyusercontent.com/wTxwbnRh8X878EoDysptDr1AzClsoPHSsuMaYGmWENw/w:1800/cb:1/aHR0cHM6Ly9naXRodWIuY29tL1BhcnNlRm9yZ2UvYXBpZnktYXNzZXRzL2Jsb2IvYWQzNWNjYzEzZGRkMDY4YjlkNmNiYTMzZjMyMzk2MmUzOWFlZDViMi9iYW5uZXIuanBnP3Jhdz10cnVl.webp)
+# ESPN Sports Data API Scraper
 
-# 🏈 ESPN Sports Scraper
+## Overview
 
-> 🚀 **Collect sports data from ESPN in minutes.** Filter by sport, data type, and team. Export scores, standings, rosters, and stats. No coding, no ESPN account required.
+Extract comprehensive sports data from ESPN's hidden API. Get live scores, standings, schedules, team rosters, and game summaries for NFL, NBA, MLB, NHL, College Football, College Basketball, and Soccer (Premier League, La Liga, MLS, etc. ).
 
-> 🕒 **Last updated:** 2026-04-23 · **📊 20+ fields** per record · **🏈 Multi-sport** · **📊 Scores + stats** · **🚫 No auth** required
+## Features
 
-The **ESPN Sports Scraper** collects sports data from ESPN, returning **20+ fields per record**: team names, scores, standings, player rosters, game schedules, and statistics across NFL, NBA, MLB, NHL, soccer, and more. Filter by sport, data type, and specific team.
+- Search by keywords to find specific results
+- Filter results by category or type
+- Export data in JSON, CSV, or Excel formats
 
-| 🎯 Target Audience | 💡 Primary Use Cases |
-| --- | --- |
-| Sports analysts, fantasy players, betting researchers, sports media, data scientists | Scores tracking, standings analysis, roster monitoring, statistical research, fantasy sports data |
+## Use Cases
 
----
+- **Track** - Track entertainment listings and reviews
+- **Build** - Build media databases for content analysis
+- **Monitor** - Monitor entertainment industry trends and ratings
+- **Aggregate** - Aggregate entertainment data for recommendation engines
 
-## 📋 What the ESPN Sports Scraper does
+## Input Parameters
 
-- 🏈 **Multi-sport.** NFL, NBA, MLB, NHL, soccer, and more.
-- 📊 **Multiple data types.** Scores, standings, rosters, schedules, stats.
-- 🏢 **Team filter.** Narrow to a specific team by ID.
-- 📦 **Automatic pagination.** Follows pages until maxItems.
-
-> 💡 **Why it matters:** tracking scores, standings, and stats across ESPN manually means visiting multiple pages per sport. This Actor exports structured sports data at scale for your dashboards, models, or content.
-
----
-
-## 🎬 Full Demo
-
-*🚧 Coming soon.*
-
----
-
-## ⚙️ Input
-
-| Input | Type | Default | Behavior |
+| Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `maxItems` | integer | `10` | Max records. |
-| `sport` | string | `""` | Sport: nfl, nba, mlb, nhl, soccer. |
-| `dataType` | string | `""` | Data: scores, standings, rosters, schedule. |
-| `teamId` | string | `""` | Specific ESPN team ID. |
+| `dataType` | string **(required)** | Type of data to scrape | `scoreboard` |
+| `sport` | string **(required)** | Sport category | `football` |
+| `league` | string **(required)** | League to scrape. For soccer, use league codes like 'eng.1' (Premier League),... | `nfl` |
+| `startDate` | string | Start date for scores/schedule (YYYYMMDD format, e.g., 20250115) |  |
+| `endDate` | string | End date for date range queries (YYYYMMDD format). If only startDate is provi... |  |
+| `teamId` | string | ESPN team ID for team-specific data (roster, schedule). Find IDs by first scr... |  |
+| `eventId` | string | ESPN event ID for game summary/box score data |  |
+| `season` | integer | Season year (e.g., 2025). Defaults to current season. | `2025` |
+| `seasonType` | string | 1=Preseason, 2=Regular Season, 3=Postseason, 4=Offseason | `2` |
+| `limit` | integer | Maximum number of results to return | `100` |
 
-**Example: NFL standings.**
+## Output Example
+
+Each result contains structured data like this:
 
 ```
-{ "sport": "nfl", "dataType": "standings", "maxItems": 32 }
+{
+  "type": "Standard",
+  "eventId": "ABC-12345",
+  "name": "ESPN Sports Data API Sample Item",
+  "date": "2025-01-15",
+  "status": "Active",
+  "homeTeam": "Sample homeTeam",
+  "awayTeam": "Sample awayTeam",
+  "venue": "Convention Center",
+  "sport": "Sample sport",
+  "league": "Sample league"
+}
 ```
 
-**Example: NBA scores today.**
+## Pricing
+
+This actor uses pay-per-result pricing:
+
+- **$0.002** per result
+- **$2.00** per 1,000 results
+
+No monthly fees. You only pay for what you scrape. [Apify Free plan](https://apify.com/pricing) includes $5/month in platform credits.
+
+## How to Run
+
+### Apify Console
+
+1. Go to the [ESPN Sports Data API Scraper](https://apify.com/fortuitous_pirate/espn-sports-scraper) actor page
+2. Configure your input parameters
+3. Click **Start** and wait for the results
+4. Download data in JSON, CSV, or Excel format
+
+### API
 
 ```
-{ "sport": "nba", "dataType": "scores", "maxItems": 20 }
+curl -X POST "https://api.apify.com/v2/acts/fortuitous_pirate~espn-sports-scraper/runs?token=YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"maxItems": 10}'
 ```
 
----
+### Python SDK
 
-## 📊 Output
+```
+from apify_client import ApifyClient
 
-### 🧾 Schema
+client = ApifyClient("YOUR_API_TOKEN")
+run = client.actor("fortuitous_pirate/espn-sports-scraper").call(
+    run_input={"maxItems": 10}
+)
 
-| Field | Type | Example |
-| --- | --- | --- |
-| 🏈 `sport` | string | `"NFL"` |
-| 🏢 `teamName` | string | `"Kansas City Chiefs"` |
-| 📊 `record` | string | `"14-3"` |
-| 💯 `score` | number | `27` |
-| 📅 `gameDate` | string | `"2026-01-12"` |
-| 🏆 `standing` | string | `"1st AFC West"` |
-| 🔗 `url` | string | `"https://www.espn.com/..."` |
-| 🕒 `scrapedAt` | ISO 8601 | `"2026-04-16T00:00:00.000Z"` |
+for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+    print(item)
+```
 
-### 📦 Sample records
+## Integration
 
- 
- 
- 
+Connect ESPN Sports Data API Scraper with your existing tools and workflows:
 
----
-
-## ✨ Why choose this Actor
-
-|  | Capability |
-| --- | --- |
-| 🏈 | **Multi-sport.** NFL, NBA, MLB, NHL, soccer, and more. |
-| 📊 | **Multiple data types.** Scores, standings, rosters, schedules. |
-| 🏢 | **Team filter.** Narrow to specific teams. |
-| ⚡ | **Scalable.** Quick lookups to full league sweeps. |
-| 🚫 | **No authentication.** Public ESPN data. |
-
----
-
-## 📈 How it compares to alternatives
-
-| Approach | Cost | Sports | Data types | Setup |
-| --- | --- | --- | --- | --- |
-| **⭐ ESPN Scraper** *(this Actor)* | $5 free credit | Multi-sport | Scores, standings, rosters | ⚡ 2 min |
-| Manual ESPN browsing | Free | One at a time | UI only | 🕒 Hours |
-| Paid sports APIs | $50-500/month | Multi-sport | Many | ⏳ Hours |
-
----
-
-## 🚀 How to use
-
-1. 📝 **Sign up.** [Create a free account with $5 credit](https://console.apify.com/sign-up?fpr=vmoqkp) (takes 2 minutes).
-2. 🌐 **Open the Actor.** Go to the ESPN Sports Scraper page.
-3. 🎯 **Set input.** Pick a sport and data type.
-4. 🚀 **Run it.** Click **Start**.
-5. 📥 **Download.** Grab results in the **Dataset** tab.
-
-> ⏱️ Total time: **3-5 minutes.** No coding required.
-
----
-
-## 💼 Business use cases
-
-| ### 📊 Sports Analytics     - Track team performance over time - Build statistical models - Monitor roster changes - Analyze scheduling patterns | ### 🎮 Fantasy & Betting     - Pull player stats for projections - Track injury reports - Monitor standings changes - Build custom dashboards |
-| --- | --- |
-| ### 📰 Sports Media     - Generate automated game recaps - Track standings for content - Build real-time scoreboards - Monitor league-wide trends | ### 🏢 Sports Business     - Track franchise valuations - Monitor attendance data - Analyze broadcast schedules - Build sports market research |
-
----
-
----
-
-## 🌟 Beyond business use cases
-
-Data like this powers more than commercial workflows. The same structured records support research, education, civic projects, and personal initiatives.
-
-| ### 🎓 Research and academia     - Empirical datasets for papers, thesis work, and coursework - Longitudinal studies tracking changes across snapshots - Reproducible research with cited, versioned data pulls - Classroom exercises on data analysis and ethical scraping | ### 🎨 Personal and creative     - Side projects, portfolio demos, and indie app launches - Data visualizations, dashboards, and infographics - Content research for bloggers, YouTubers, and podcasters - Hobbyist collections and personal trackers |
-| --- | --- |
-| ### 🤝 Non-profit and civic     - Transparency reporting and accountability projects - Advocacy campaigns backed by public-interest data - Community-run databases for local issues - Investigative journalism on public records | ### 🧪 Experimentation     - Prototype AI and machine-learning pipelines with real data - Validate product-market hypotheses before engineering spend - Train small domain-specific models on niche corpora - Test dashboard concepts with live input |
-
-## 🤖 Ask an AI assistant about this scraper
-
-Open a ready-to-send prompt about this ParseForge actor in the AI of your choice:
-
-- 💬 [**ChatGPT**](https://chat.openai.com/?q=How%20do%20I%20use%20the%20ESPN%20Sports%20Data%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🧠 [**Claude**](https://claude.ai/new?q=How%20do%20I%20use%20the%20ESPN%20Sports%20Data%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🔍 [**Perplexity**](https://perplexity.ai/search?q=How%20do%20I%20use%20the%20ESPN%20Sports%20Data%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🅒 [**Copilot**](https://copilot.microsoft.com/?q=How%20do%20I%20use%20the%20ESPN%20Sports%20Data%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-
-## ❓ Frequently Asked Questions
-
-### 💳 Do I need a paid Apify plan to run this actor?
-
-No. You can start right now on the free Apify plan, which includes **$5 in free monthly credit**. That is enough to run this actor several times and explore the output before committing to anything. Paid plans unlock higher limits, more concurrent runs, and larger datasets. [Create a free Apify account here](https://console.apify.com/sign-up?fpr=vmoqkp) to get started.
-
-### 🚨 What happens if my run fails or returns no results?
-
-Failed runs are not charged. If the source site changes, proxies get rate-limited, or a specific input matches nothing, re-run the actor or open our [contact form](https://tally.so/r/BzdKgA) and we will investigate. You can also check the run log in the Apify console to see why the run stopped.
-
-### 📏 How many items can I scrape per run?
-
-Free users are limited to **10 items per run** so you can preview the output and confirm the actor works for your use case. Paid users can raise `maxItems` up to **1,000,000** per run. [Upgrade here](https://console.apify.com/sign-up?fpr=vmoqkp) if you need full scale.
-
-### 🕒 How fresh is the data?
-
-Every run fetches live data at the moment of execution. There is no cache or delay: the records you get reflect what the source returned at that moment. Schedule the actor to maintain a rolling snapshot of the data you need.
-
-### 🧑‍💻 Can I call this actor from my own code?
-
-Yes. Apify exposes every actor as a REST endpoint and ships first-class SDKs for [Node.js](https://docs.apify.com/sdk/js) and [Python](https://docs.apify.com/sdk/python). You can start a run, read the dataset, and handle webhooks from your own app in a few lines. All you need is your Apify API token.
-
-### 📤 How do I export the data?
-
-Every Apify dataset can be downloaded in one click from the console as CSV, JSON, JSONL, Excel, HTML, XML, or RSS. You can also pull results programmatically via the [Apify API](https://docs.apify.com/api/v2) or stream them into BigQuery, S3, and other destinations through built-in integrations.
-
-### 📅 Can I schedule the actor to run automatically?
-
-Yes. Use the Apify scheduler to run the actor on any cadence, from hourly to monthly. Results are saved to your dataset and can be delivered to webhooks, email, Slack, cloud storage, or automation tools such as Zapier and Make.
-
----
-
-## 🔌 Automating ESPN Sports Scraper
-
-- 🟢 **Node.js.** Install the `apify-client` NPM package.
-- 🐍 **Python.** Use the `apify-client` PyPI package.
-- 📚 See the [Apify API documentation](https://docs.apify.com/api/v2) for full details.
-
-## 🔌 Integrate with any app
-
-- [**Make**](https://docs.apify.com/platform/integrations/make) - Automate workflows
-- [**Zapier**](https://docs.apify.com/platform/integrations/zapier) - Connect 5,000+ apps
-- [**Slack**](https://docs.apify.com/platform/integrations/slack) - Get score alerts
-- [**Airbyte**](https://docs.apify.com/platform/integrations/airbyte) - Data pipelines
-- [**GitHub**](https://docs.apify.com/platform/integrations/github) - Trigger from commits
-- [**Google Drive**](https://docs.apify.com/platform/integrations/drive) - Export to Sheets
-
----
-
-## 🔗 Recommended Actors
-
-- [**🎲 DraftKings Scraper**](https://apify.com/parseforge/draftkings-scraper) - Betting odds and DFS data
-- [**🎫 StubHub Scraper**](https://apify.com/parseforge/stubhub-scraper) - Event ticket pricing
-- [**🎉 Eventbrite Scraper**](https://apify.com/parseforge/eventbrite-scraper) - Event listings
-- [**📱 Reddit Posts Scraper**](https://apify.com/parseforge/reddit-posts-scraper) - Fan discussions
-- [**🐦 X.com Tweets Scraper**](https://apify.com/parseforge/x-com-scraper) - Sports commentary
-
-> 💡 Browse the complete [ParseForge collection](https://apify.com/parseforge).
-
----
-
-**🆘 Need Help?** [**Open our contact form**](https://tally.so/r/BzdKgA) to request a new scraper or report an issue.
-
----
-
-> **⚠️ Disclaimer:** Independent tool, not affiliated with ESPN or The Walt Disney Company. Only publicly available sports data is collected.
+- **API access** - Programmatic access via [Apify API](https://docs.apify.com/api/v2)
+- **Webhooks** - Get notified when scraping completes
+- **Scheduling** - Set up recurring runs on any schedule
+- **Zapier / Make** - Connect with 5,000+ apps via [Apify integrations](https://apify.com/integrations)
+- **Python / Node.js SDKs** - Native client libraries for easy integration
